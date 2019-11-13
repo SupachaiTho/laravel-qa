@@ -19,11 +19,27 @@
 
                 <div class="media">
                     <div class="d-flex flex-column vote-controls">
-                        <a title="This question is useful" class="vote-up">
+                        <a
+                            title="This question is useful"
+                            class="vote-up {{ Auth::guest() ? 'off' : ''}}"
+                            onclick="event.preventDefault(); document.getElementById('up-vote-question-{{ $question->id }}').submit();"
+                        >
+                            <form id="up-vote-question-{{ $question->id}}" action="/questions/{{ $question->id }}/vote" method="POST" style="display:none">
+                                @csrf
+                                <input type="hidden" name="vote" value="1">
+                            </form>
                             <i class="fas fa-caret-up fa-3x"></i>
                         </a>
-                        <span class="votes-count">1230</span>
-                        <a title="This question is not useful" class="vote-down off">
+                        <span class="votes-count">{{ $question->votes_count }}</span>
+                        <a
+                            title="This question is not useful"
+                            class="vote-up {{ Auth::guest() ? 'off' : ''}}"
+                            onclick="event.preventDefault(); document.getElementById('down-vote-question-{{ $question->id }}').submit();"
+                        >
+                            <form id="down-vote-question-{{ $question->id}}" action="/questions/{{ $question->id }}/vote" method="POST" style="display:none">
+                                @csrf
+                                <input type="hidden" name="vote" value="-1">
+                            </form>
                             <i class="fas fa-caret-down fa-3x"></i>
                         </a>
                         <a
